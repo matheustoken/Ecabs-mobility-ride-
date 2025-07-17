@@ -1,5 +1,6 @@
 package com.ecabs.Ecabs.ms.service;
 
+import com.ecabs.Ecabs.ms.dto.ResponseCompleteRideDTO;
 import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.DriverStatus;
 import com.ecabs.Ecabs.ms.entities.Location;
@@ -35,15 +36,17 @@ public class RideService {
         return Optional.of(ride);
     }
 
-    public boolean completeRide(Long rideId){
+    public ResponseCompleteRideDTO completeRide(Long rideId){
         Ride ride = rides.get(rideId);
-        if(ride == null|| ride.isCompleted()){
-            return false;
+        if(ride == null){
+            return new ResponseCompleteRideDTO("Ride not found.", "N/A");
         }
-        ride.completeRide();
+        if (ride.isCompleted()) {
+            return new ResponseCompleteRideDTO("Ride is already completed.",ride.getDriver().getStatus().name());
+        }
         Driver driver = ride.getDriver();
         driver.setStatus(DriverStatus.AVAILABLE);
-        return true;
+        return new ResponseCompleteRideDTO("Ride completed successfully.", driver.getStatus().name());
     }
 
 
