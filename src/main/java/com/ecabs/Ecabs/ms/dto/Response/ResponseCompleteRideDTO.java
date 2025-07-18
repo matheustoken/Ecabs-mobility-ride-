@@ -1,4 +1,4 @@
-package com.ecabs.Ecabs.ms.dto;
+package com.ecabs.Ecabs.ms.dto.Response;
 
 public class ResponseCompleteRideDTO {
     private String message;
