@@ -1,4 +1,4 @@
-package com.ecabs.Ecabs.ms.dto;
+package com.ecabs.Ecabs.ms.dto.Response;
 
 import com.ecabs.Ecabs.ms.entities.Location;
 

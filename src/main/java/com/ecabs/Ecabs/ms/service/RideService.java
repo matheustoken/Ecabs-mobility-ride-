@@ -1,12 +1,14 @@
 package com.ecabs.Ecabs.ms.service;
 
-import com.ecabs.Ecabs.ms.dto.ResponseCompleteRideDTO;
+import com.ecabs.Ecabs.ms.dto.Response.ResponseCompleteRideDTO;
 import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.DriverStatus;
 import com.ecabs.Ecabs.ms.entities.Location;
 import com.ecabs.Ecabs.ms.entities.Ride;
+import com.ecabs.Ecabs.ms.service.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +26,22 @@ public class RideService {
     }
 
     public Optional<Ride> requestRide(Location pickupLocation){
+        List<String> errors = new ArrayList<>();
+
+        if (pickupLocation == null) {
+            errors.add("Location is required");
+        } else {
+            if (pickupLocation.currentLocationX() == null) {
+                errors.add("Location X is required");
+            }
+            if (pickupLocation.currentLocationY() == null) {
+                errors.add("Location Y is required");
+            }
+        }
+        if (!errors.isEmpty()) {
+            throw new ValidationException(errors);
+        }
+
         List<Driver> nearestDriver = driverService.findNearestAvailableDrivers(pickupLocation);
         if(nearestDriver.isEmpty()){
             return Optional.empty();
