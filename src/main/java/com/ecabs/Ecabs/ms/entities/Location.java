@@ -1,27 +1,21 @@
 package com.ecabs.Ecabs.ms.entities;
 
-public class Location {
-    private final double currentLocationX;
-    private final double currentLocationY;
+public record Location(Double currentLocationX, Double currentLocationY) {
 
-    public Location(double currentLocationX, double currentLocationY) {
-        this.currentLocationX = currentLocationX;
-        this.currentLocationY = currentLocationY;
+    public double calculateEuclideanDistance(double targetX, double targetY) {
+        double deltaX = targetX - this.currentLocationX;
+        double deltaY = targetY - this.currentLocationY;
+        return Math.hypot(deltaX, deltaY);
     }
 
-    public double getCurrentLocationX() {
+    @Override
+    public Double currentLocationX() {
         return currentLocationX;
     }
 
-    public double getCurrentLocationY() {
+    @Override
+    public Double currentLocationY() {
         return currentLocationY;
     }
-
-    public double calculateEuclideanDistance(double targetX, double targetY){
-        double deltaX = targetX-this.currentLocationX;
-        double deltaY = targetY-this.currentLocationY;
-        return Math.hypot(deltaX,deltaY);
-    }
-
 
 }

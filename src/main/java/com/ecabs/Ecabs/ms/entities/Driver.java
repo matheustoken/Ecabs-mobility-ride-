@@ -1,8 +1,12 @@
 package com.ecabs.Ecabs.ms.entities;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Driver {
 
+
     private Long driverId;
+
     private String name;
     private String car;
     private Location currentLocation;
