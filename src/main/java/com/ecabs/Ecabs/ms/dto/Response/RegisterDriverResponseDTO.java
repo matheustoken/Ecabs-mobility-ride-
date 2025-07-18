@@ -1,32 +1,34 @@
-package com.ecabs.Ecabs.ms.entities;
+package com.ecabs.Ecabs.ms.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import com.ecabs.Ecabs.ms.entities.DriverStatus;
+import com.ecabs.Ecabs.ms.entities.Location;
 
-public class Driver {
-
-
+public class RegisterDriverResponseDTO {
     private Long driverId;
-
     private String name;
     private String car;
     private Location currentLocation;
     private DriverStatus status;
 
-    public Driver(){
+    public RegisterDriverResponseDTO(){
     }
 
-
-    public Driver(Long driverId, String name, String car, Location currentLocation) {
+    public RegisterDriverResponseDTO(Long driverId, String name,String car, Location currentLocation, DriverStatus status) {
         this.driverId = driverId;
+        this.status = DriverStatus.AVAILABLE;
         this.currentLocation = currentLocation;
         this.car = car;
         this.name = name;
-        this.status = DriverStatus.AVAILABLE;
     }
 
     public Long getDriverId() {
         return driverId;
     }
+
+    public DriverStatus getStatus() {
+        return status;
+    }
+
     public Location getCurrentLocation() {
         return currentLocation;
     }
@@ -37,17 +39,5 @@ public class Driver {
 
     public String getName() {
         return name;
-    }
-
-    public DriverStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(DriverStatus status) {
-        this.status = status;
-    }
-
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
     }
 }
