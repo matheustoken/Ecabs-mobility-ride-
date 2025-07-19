@@ -34,5 +34,9 @@ public class Ride {
         this.isCompleted = true;
         driver.setStatus(DriverStatus.AVAILABLE);
     }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }
 

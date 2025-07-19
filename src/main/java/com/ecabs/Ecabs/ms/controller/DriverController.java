@@ -25,7 +25,7 @@ public class DriverController {
     DriverService driverService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDriverResponseDTO> registerDriver( @Valid @RequestBody RegisterDriverRequestDTO requestDTO) {
+    public ResponseEntity<RegisterDriverResponseDTO> registerDriver( @RequestBody RegisterDriverRequestDTO requestDTO) {
         RegisterDriverResponseDTO response = driverService.registerDriver(requestDTO
         );
         URI uri = ServletUriComponentsBuilder

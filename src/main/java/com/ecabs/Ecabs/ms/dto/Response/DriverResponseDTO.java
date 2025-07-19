@@ -8,7 +8,7 @@ public class DriverResponseDTO {
 
     public DriverResponseDTO(){
     }
-    
+
     public DriverResponseDTO(String name, String car, double distance) {
         this.name = name;
         this.car = car;
