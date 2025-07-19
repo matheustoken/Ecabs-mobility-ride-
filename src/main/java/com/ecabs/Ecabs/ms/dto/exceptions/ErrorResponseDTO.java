@@ -2,6 +2,7 @@ package com.ecabs.Ecabs.ms.dto.exceptions;
 
 import java.util.List;
 
+
 public class ErrorResponseDTO {
 
     private ErrorDetail error;

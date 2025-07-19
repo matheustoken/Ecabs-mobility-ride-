@@ -8,13 +8,13 @@ import jakarta.validation.constraints.NotNull;
 
     public class RegisterDriverRequestDTO {
 
-        @NotBlank(message = "Driver name is required")
+
         private String name;
 
-        @NotBlank(message = "Car is required")
+
         private String car;
 
-        @NotNull(message = "Location is required")
+
         private Location currentLocation;
 
 

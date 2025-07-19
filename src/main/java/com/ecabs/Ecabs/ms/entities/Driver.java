@@ -6,7 +6,6 @@ public class Driver {
 
 
     private Long driverId;
-
     private String name;
     private String car;
     private Location currentLocation;

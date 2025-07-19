@@ -5,6 +5,9 @@ import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.DriverStatus;
 import com.ecabs.Ecabs.ms.entities.Location;
 import com.ecabs.Ecabs.ms.entities.Ride;
+import com.ecabs.Ecabs.ms.service.exceptions.DriversNotFoundException;
+import com.ecabs.Ecabs.ms.service.exceptions.NotFoundException;
+import com.ecabs.Ecabs.ms.service.exceptions.RideNotFoundException;
 import com.ecabs.Ecabs.ms.service.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 
@@ -28,24 +31,27 @@ public class RideService {
     public Optional<Ride> requestRide(Location pickupLocation){
         List<String> errors = new ArrayList<>();
 
-        if (pickupLocation == null) {
-            errors.add("Location is required");
-        } else {
-            if (pickupLocation.currentLocationX() == null) {
+        if (pickupLocation.currentLocationX() == null) {
                 errors.add("Location X is required");
             }
-            if (pickupLocation.currentLocationY() == null) {
+        if (pickupLocation.currentLocationY() == null) {
                 errors.add("Location Y is required");
             }
-        }
+
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
         }
 
+
         List<Driver> nearestDriver = driverService.findNearestAvailableDrivers(pickupLocation);
-        if(nearestDriver.isEmpty()){
-            return Optional.empty();
+
+        if (nearestDriver.isEmpty()) {
+            errors.add("No drivers available at the moment");
         }
+        if (!errors.isEmpty()) {
+            throw new DriversNotFoundException(errors);
+        }
+
         Driver driver = nearestDriver.get(0);
         driver.setStatus(DriverStatus.UNAVAILABLE);
         long rideId = rideIdCounter.getAndIncrement();
@@ -55,10 +61,15 @@ public class RideService {
     }
 
     public ResponseCompleteRideDTO completeRide(Long rideId){
+        List<String> errors = new ArrayList<>();
         Ride ride = rides.get(rideId);
         if(ride == null){
-            return new ResponseCompleteRideDTO("Ride not found.", "N/A");
+            errors.add("Ride Not Found");
         }
+        if (!errors.isEmpty()) {
+            throw new RideNotFoundException(errors);
+        }
+
         if (ride.isCompleted()) {
             return new ResponseCompleteRideDTO("Ride is already completed.",ride.getDriver().getStatus().name());
         }

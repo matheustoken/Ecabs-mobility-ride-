@@ -9,6 +9,7 @@ import com.ecabs.Ecabs.ms.dto.Response.UpdateDriverResponseDTO;
 import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.DriverStatus;
 import com.ecabs.Ecabs.ms.entities.Location;
+import com.ecabs.Ecabs.ms.service.exceptions.NotFoundException;
 import com.ecabs.Ecabs.ms.service.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,12 @@ public class DriverService {
     public RegisterDriverResponseDTO registerDriver(RegisterDriverRequestDTO requestDriver) {
         List<String> errors = new ArrayList<>();
 
+        if (requestDriver.getCar() == null || requestDriver.getCar().trim().isEmpty()) {
+            errors.add("Car is required");
+        }
+        if (requestDriver.getName() == null || requestDriver.getName().trim().isEmpty()) {
+            errors.add("Driver name is required");
+        }
         Location location = requestDriver.getCurrentLocation();
         if (location == null) {
             errors.add("Location is required");
@@ -62,14 +69,12 @@ public class DriverService {
     }
     public UpdateDriverResponseDTO updateDriver(Long driverId, UpdateDriverRequestDTO updateDriver){
         List<String> errors = new ArrayList<>();
-        if (updateDriver.getStatus() == null ||
-                !(updateDriver.getStatus() == DriverStatus.AVAILABLE ||
-                        updateDriver.getStatus() == DriverStatus.UNAVAILABLE)) {
+        Location location = updateDriver.getCurrentLocation();
 
-            errors.add("Driver status must be AVAILABLE or UNAVAILABLE");
+        if(driverId ==null|| !drivers.containsKey(driverId)){
+            throw new NotFoundException("Driver Not Found");
         }
 
-        Location location = updateDriver.getCurrentLocation();
         if (location == null) {
             errors.add("Location is required");
         } else {
@@ -80,6 +85,11 @@ public class DriverService {
                 errors.add("Location Y is required");
             }
         }
+        if (updateDriver.getStatus() == null ||
+                (updateDriver.getStatus() != DriverStatus.AVAILABLE && updateDriver.getStatus() != DriverStatus.UNAVAILABLE)) {
+            errors.add("Driver status must be AVAILABLE or UNAVAILABLE");
+        }
+
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
         }
@@ -100,7 +110,7 @@ public class DriverService {
 
         List<String> errors = new ArrayList<>();
 
-        if(pickupLocation.currentLocationX() ==null){
+        if(pickupLocation.currentLocationX() ==null ){
             errors.add("Location X is required");
         }
         if (pickupLocation.currentLocationY() == null) {
@@ -120,7 +130,17 @@ public class DriverService {
     }
 
     public List<Driver> findNearestAvailableDrivers(Location pickupLocation) {
+        List<String> errors = new ArrayList<>();
 
+        if(pickupLocation.currentLocationX() ==null ){
+            errors.add("Location X is required");
+        }
+        if (pickupLocation.currentLocationY() == null) {
+            errors.add("Location Y is required");
+        }
+        if (!errors.isEmpty()) {
+            throw new ValidationException(errors);
+        }
         return drivers.values().stream()
                 .filter(driver->driver.getStatus()==DriverStatus.AVAILABLE)
                 .sorted(Comparator.comparingDouble(d ->
