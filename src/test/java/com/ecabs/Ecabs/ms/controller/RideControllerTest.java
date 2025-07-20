@@ -44,7 +44,7 @@ class RideControllerTest {
         Ride ride = new Ride(123L, driver, pickupLocation);
 
         Mockito.when(rideService.requestRide(Mockito.any(Location.class)))
-                .thenReturn(Optional.of(ride));
+                .thenReturn(ride);
 
         String jsonRequest = objectMapper.writeValueAsString(pickupLocation);
 

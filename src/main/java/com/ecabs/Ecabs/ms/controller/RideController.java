@@ -23,8 +23,7 @@ public class RideController {
 
     @PostMapping("/request")
     public ResponseEntity<RideResponseDTO> requestRide(@RequestBody Location pickupLocation) {
-        Optional<Ride> rideRequest = rideService.requestRide(pickupLocation);
-        Ride ride = rideRequest.get();
+        Ride ride = rideService.requestRide(pickupLocation);
         Driver driver = ride.getDriver();
 
         RideResponseDTO response = new RideResponseDTO(

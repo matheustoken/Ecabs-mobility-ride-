@@ -28,11 +28,10 @@ public class RideService {
         this.driverService = driverService;
     }
 
-    public Optional<Ride> requestRide(Location location) {
+    public Ride requestRide(Location location) {
         throwIfHasErrors(validator.requestRideValidator(location));
 
         List<Driver> nearestDriver = driverService.findNearestAvailableDrivers(location);
-
         validator.validateNearestDriver(nearestDriver);
 
         Driver driver = nearestDriver.get(0);
@@ -42,11 +41,10 @@ public class RideService {
         Ride ride = new Ride(rideId, driver,location);
         rides.put(rideId, ride);
 
-        return Optional.of(ride);
+        return ride;
     }
 
     public ResponseCompleteRideDTO completeRide(Long rideId) {
-        List<String> errors = new ArrayList<>();
         Ride ride = rides.get(rideId);
 
         validator.validateRideExists(ride);
