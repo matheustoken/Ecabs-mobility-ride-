@@ -3,17 +3,11 @@ package com.ecabs.Ecabs.ms.entities;
 import jakarta.validation.constraints.NotBlank;
 
 public class Driver {
-
-
     private Long driverId;
     private String name;
     private String car;
     private Location currentLocation;
     private DriverStatus status;
-
-    public Driver(){
-    }
-
 
     public Driver(Long driverId, String name, String car, Location currentLocation) {
         this.driverId = driverId;
@@ -26,6 +20,7 @@ public class Driver {
     public Long getDriverId() {
         return driverId;
     }
+
     public Location getCurrentLocation() {
         return currentLocation;
     }

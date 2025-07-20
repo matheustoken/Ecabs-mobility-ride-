@@ -5,7 +5,6 @@ import com.ecabs.Ecabs.ms.dto.Response.DriverResponseDTO;
 import com.ecabs.Ecabs.ms.dto.Response.RegisterDriverResponseDTO;
 import com.ecabs.Ecabs.ms.dto.Request.RegisterDriverRequestDTO;
 import com.ecabs.Ecabs.ms.dto.Response.UpdateDriverResponseDTO;
-import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.Location;
 import com.ecabs.Ecabs.ms.service.DriverService;
 import jakarta.validation.Valid;
@@ -22,28 +21,28 @@ import java.util.List;
 public class DriverController {
 
     @Autowired
-    DriverService driverService;
+    private DriverService driverService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDriverResponseDTO> registerDriver( @RequestBody RegisterDriverRequestDTO requestDTO) {
-        RegisterDriverResponseDTO response = driverService.registerDriver(requestDTO
-        );
+    public ResponseEntity<RegisterDriverResponseDTO> registerDriver(@RequestBody RegisterDriverRequestDTO requestDTO) {
+        RegisterDriverResponseDTO response = driverService.registerDriver(requestDTO);
+
         URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest() // pega o caminho atual: /register
+                .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(response.getDriverId()) // adiciona o id do driver no path
+                .buildAndExpand(response.getDriverId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(response);
     }
 
     @PutMapping("/{driverId}/update")
-    public ResponseEntity<UpdateDriverResponseDTO>updateDriver(@Valid @PathVariable Long driverId, @RequestBody UpdateDriverRequestDTO request){
-        UpdateDriverResponseDTO response = driverService.updateDriver(
-                driverId,
-                request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<UpdateDriverResponseDTO> updateDriver(
+            @Valid @PathVariable Long driverId,
+            @RequestBody UpdateDriverRequestDTO request) {
 
+        UpdateDriverResponseDTO response = driverService.updateDriver(driverId, request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/nearest")
@@ -51,14 +50,10 @@ public class DriverController {
             @RequestParam Double locationX,
             @RequestParam Double locationY) {
 
-        Location pickupLocation = new Location(locationX,locationY);
+        Location pickupLocation = new Location(locationX, locationY);
         List<DriverResponseDTO> nearestDrivers = driverService.getNearestAvailableDrivers(pickupLocation);
 
         return ResponseEntity.ok(nearestDrivers);
     }
-
-
-
-
-
 }
+

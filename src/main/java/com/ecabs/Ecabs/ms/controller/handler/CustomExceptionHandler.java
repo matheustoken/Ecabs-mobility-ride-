@@ -1,6 +1,5 @@
 package com.ecabs.Ecabs.ms.controller.handler;
 
-
 import com.ecabs.Ecabs.ms.dto.exceptions.ErrorResponseDTO;
 import com.ecabs.Ecabs.ms.service.exceptions.DriversNotFoundException;
 import com.ecabs.Ecabs.ms.service.exceptions.NotFoundException;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -32,81 +29,46 @@ public class CustomExceptionHandler {
                 .collect(Collectors.toList());
 
         String message = "Invalid input data";
-
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(message, details);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ErrorResponseDTO> handleRegisterValidationException(
-            ValidationException ex
-    ) {
+    public ResponseEntity<ErrorResponseDTO> handleRegisterValidationException(ValidationException ex) {
         List<String> details = ex.getErrors();
         String message = "Invalid input data";
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                message,
-                details
-        );
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(message, details);
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
     @ExceptionHandler(DriversNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleRegisterValidationException(
-            DriversNotFoundException ex
-    ) {
+    public ResponseEntity<ErrorResponseDTO> handleDriversNotFoundException(DriversNotFoundException ex) {
         List<String> details = ex.getErrors();
         String message = "Drivers Not Found";
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                message,
-                details
-        );
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(message, details);
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(RideNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleRegisterValidationException(
-            RideNotFoundException ex
-    ) {
+    public ResponseEntity<ErrorResponseDTO> handleRideNotFoundException(RideNotFoundException ex) {
         List<String> details = ex.getErrors();
         String message = "Ride Not Found";
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                message,
-                details
-        );
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(message, details);
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
-
-
-
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleRegisterValidationException(
-            NotFoundException ex
-    ) {
+    public ResponseEntity<ErrorResponseDTO> handleGenericNotFoundException(NotFoundException ex) {
         List<String> details = ex.getErrors();
         String message = "Invalid input data";
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                message,
-                details
-        );
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(message, details);
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
-
-
-
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDTO> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
@@ -121,33 +83,20 @@ public class CustomExceptionHandler {
         } else if (exMsg.contains("Double") || exMsg.contains("number")) {
             message = "Invalid value for field 'location'";
             details = List.of("Location must be a numeric value");
-
-        } else if (exMsg.contains("Double") || exMsg.contains("number")) {
-            message = "Invalid value for field 'location'";
-            details = List.of("Location must be a numeric value");
-            }
-        else {
+        } else {
             details = List.of(exMsg);
         }
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDTO(message, details));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(message, details));
     }
-
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponseDTO> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         String message = "Invalid input data";
-        List<String> details;
-        details = List.of("Invalid argument type");
-
+        List<String> details = List.of("Invalid argument type");
 
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(message, details);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
-
-
-
 }

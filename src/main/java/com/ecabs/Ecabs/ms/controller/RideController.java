@@ -1,6 +1,5 @@
 package com.ecabs.Ecabs.ms.controller;
 
-
 import com.ecabs.Ecabs.ms.dto.Response.ResponseCompleteRideDTO;
 import com.ecabs.Ecabs.ms.dto.Response.RideResponseDTO;
 import com.ecabs.Ecabs.ms.entities.Driver;
@@ -20,24 +19,25 @@ import java.util.Optional;
 public class RideController {
 
     @Autowired
-    RideService rideService;
-
+    private RideService rideService;
 
     @PostMapping("/request")
-    public ResponseEntity<RideResponseDTO> requestDriver(@RequestBody Location pickupLocation) {
+    public ResponseEntity<RideResponseDTO> requestRide(@RequestBody Location pickupLocation) {
         Optional<Ride> rideRequest = rideService.requestRide(pickupLocation);
         Ride ride = rideRequest.get();
         Driver driver = ride.getDriver();
+
         RideResponseDTO response = new RideResponseDTO(
                 ride.getRideId(),
                 driver.getName(),
                 driver.getCar(),
                 driver.getCurrentLocation()
         );
+
         URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest() // pega o caminho atual: /register
+                .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(response.getRideId()) // adiciona o id do driver no path
+                .buildAndExpand(response.getRideId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(response);
@@ -48,5 +48,6 @@ public class RideController {
         ResponseCompleteRideDTO response = rideService.completeRide(rideId);
         return ResponseEntity.ok(response);
     }
-
 }
+
+
