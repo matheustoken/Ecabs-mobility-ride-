@@ -57,5 +57,5 @@ Unit tests are implemented using JUnit and Mockito and cover:
   - Validation errors (400)
   - Not found exceptions (404)
   - No available driver scenarios
-  
+
 
