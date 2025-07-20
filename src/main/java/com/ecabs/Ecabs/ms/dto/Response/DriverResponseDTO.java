@@ -8,13 +8,8 @@ public class DriverResponseDTO {
     private String car;
     private Double distance;
 
-    private Location location;
 
     public DriverResponseDTO(){
-    }
-
-    public Long getDriverId() {
-        return driverId;
     }
 
     public DriverResponseDTO(String name, String car, Double distance) {
@@ -33,8 +28,5 @@ public class DriverResponseDTO {
 
     public double getDistance() {
         return distance;
-    }
-    public Location getLocation() {
-        return location;
     }
 }

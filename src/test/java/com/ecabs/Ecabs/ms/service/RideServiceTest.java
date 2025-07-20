@@ -13,7 +13,11 @@ import com.ecabs.Ecabs.ms.service.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,11 +42,7 @@ class RideServiceTest {
 
         Location pickup = new Location(30.0, 10.0);
 
-        Optional<Ride> rideOpt = rideService.requestRide(pickup);
-
-        assertTrue(rideOpt.isPresent());
-
-        Ride ride = rideOpt.get();
+        Ride ride = rideService.requestRide(pickup);
         assertEquals(pickup, ride.getPickupLocation());
         assertEquals(1,ride.getRideId());
         assertEquals("Matheus", ride.getDriver().getName());
@@ -93,11 +93,8 @@ class RideServiceTest {
         driverService.registerDriver(driverRequest);
 
         Location pickupLocation = new Location(5.1, 5.2);
-        Optional<Ride> rideOpt = rideService.requestRide(pickupLocation);
 
-        assertTrue(rideOpt.isPresent());
-
-        Ride ride = rideOpt.get();
+        Ride ride = rideService.requestRide(pickupLocation);
         Driver driver = ride.getDriver();
 
         assertFalse(ride.isCompleted());
@@ -119,11 +116,8 @@ class RideServiceTest {
         driverService.registerDriver(driverRequest);
 
         Location pickupLocation = new Location(5.1, 5.2);
-        Optional<Ride> rideOpt = rideService.requestRide(pickupLocation);
 
-        assertTrue(rideOpt.isPresent());
-
-        Ride ride = rideOpt.get();
+        Ride ride = rideService.requestRide(pickupLocation);
         Driver driver = ride.getDriver();
 
         ride.setCompleted(true);
@@ -151,7 +145,73 @@ class RideServiceTest {
 
         assertTrue(exception.getMessage().contains("Ride Not Found"));
     }
+    @Test
+    void testConcurrentDriverAllocation2() throws InterruptedException {
+        int numberOfDrivers = 10;
+        List<String> allocatedDrivers = Collections.synchronizedList(new ArrayList<>());
+        AtomicInteger rideCounter = new AtomicInteger(0);
 
+        // Register 10 drivers
+        for (int i = 1; i <= numberOfDrivers; i++) {
+            driverService.registerDriver(
+                    new RegisterDriverRequestDTO(
+                            "Driver" + i,
+                            "Car" + i,
+                            new Location(0.0, 0.0)
+                    )
+            );
+        }
+
+        Runnable allocate = () -> {
+            while (true) {
+                if (rideCounter.get() >= numberOfDrivers) break;
+
+                List<Driver> available = driverService.findNearestAvailableDrivers(new Location(0.0, 0.0));
+
+                if (available.isEmpty()) break;
+
+                Driver driver = available.get(0);
+                Long driverId = driver.getDriverId();
+
+                synchronized (driverService.getDrivers().get(driverId)) {
+                    Driver d = driverService.getDrivers().get(driverId);
+
+                    if (d != null && d.getStatus() == DriverStatus.AVAILABLE) {
+                        try {
+                            rideService.requestRide(new Location(0.0, 0.0));
+                            allocatedDrivers.add(d.getName());
+                            rideCounter.incrementAndGet();
+                        } catch (Exception e) {
+                            // log if needed
+                        }
+                        break;
+                    }
+                }
+            }
+        };
+
+        // Start 12 threads
+        List<Thread> threads = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            Thread t = new Thread(allocate);
+            threads.add(t);
+            t.start();
+        }
+
+        // Wait for all to complete
+        for (Thread t : threads) {
+            t.join();
+        }
+
+        // Validations
+        assertEquals(numberOfDrivers, allocatedDrivers.stream().distinct().count());
+
+        long unavailableCount = driverService.getDrivers().values().stream()
+                .filter(driver -> driver.getStatus() == DriverStatus.UNAVAILABLE)
+                .count();
+
+        assertEquals(numberOfDrivers, unavailableCount);
+    }
 
 
 
