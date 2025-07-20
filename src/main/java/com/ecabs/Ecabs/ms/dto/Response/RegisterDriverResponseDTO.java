@@ -10,9 +10,6 @@ public class RegisterDriverResponseDTO {
     private Location currentLocation;
     private DriverStatus status;
 
-    public RegisterDriverResponseDTO(){
-    }
-
     public RegisterDriverResponseDTO(Long driverId, String name,String car, Location currentLocation, DriverStatus status) {
         this.driverId = driverId;
         this.status = DriverStatus.AVAILABLE;

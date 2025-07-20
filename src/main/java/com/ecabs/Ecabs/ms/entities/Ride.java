@@ -1,20 +1,23 @@
 package com.ecabs.Ecabs.ms.entities;
 
 public class Ride {
-
-    private final long rideId;
+    private final Long rideId;
     private final Driver driver;
     private final Location pickupLocation;
     private boolean isCompleted;
 
-    public Ride(long rideId, Driver driver, Location pickupLocation) {
+    public Ride(Long rideId, Driver driver, Location pickupLocation) {
         this.rideId = rideId;
         this.driver = driver;
         this.pickupLocation = pickupLocation;
         this.isCompleted = false;
     }
 
-    public long getRideId() {
+    public Long getRideId() {
+        return rideId;
+    }
+
+    public Long setRideId(){
         return rideId;
     }
 
@@ -28,11 +31,6 @@ public class Ride {
 
     public boolean isCompleted() {
         return isCompleted;
-    }
-
-    public void completeRide() {
-        this.isCompleted = true;
-        driver.setStatus(DriverStatus.AVAILABLE);
     }
 
     public void setCompleted(boolean completed) {
