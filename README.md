@@ -90,7 +90,7 @@ Status: `200 OK`
     "currentLocationY": 20.0
 }
 ```
--status: `201 CREATED`
+Status: `201 CREATED`
 ### 4. Get Nearest Available Drivers
 
 - **Endpoint:** `GET /driver/nearest`
