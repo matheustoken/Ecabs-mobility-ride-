@@ -41,8 +41,8 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ### 1. Register a Driver
 
-- **Endpoint:** `POST /driver/register`
-- **Request JSON:**
+ **Endpoint:** `POST /driver/register`
+ **Request JSON:**
 
 ```json
 {
@@ -57,8 +57,8 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ### 2. Update Driver Information
 
-- **Endpoint:** `PUT /driver/{driverId}/update`
-- **Request JSON:**
+ **Endpoint:** `PUT /driver/{driverId}/update`
+  **Request JSON:**
 
 ```json
 {
@@ -72,8 +72,8 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ### 3. Request a Ride
 
-- **Endpoint:** `POST /ride/request`
-- **Request JSON:**
+ **Endpoint:** `POST /ride/request`
+ **Request JSON:**
 
 ```json
 {
@@ -85,15 +85,15 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ## 4.Get Nearest Available Drivers
 
-- **Endpoint:** `GET /driver/nearest`
-- **Query Parameters:**
-  - `locationX` (Double) - X coordinate of the pickup location (required)
-  - `locationY` (Double) - Y coordinate of the pickup location (required)
+ **Endpoint:** `GET /driver/nearest`
+ **Query Parameters:**
+   `locationX` (Double) - X coordinate of the pickup location (required)
+   `locationY` (Double) - Y coordinate of the pickup location (required)
 
-- **Description:**  
+ **Description:**  
   Returns a list of nearest available drivers sorted by their Euclidean distance to the given pickup location.
 
-- **Success Response (200 OK):** -Nearest Drivers
+ **Success Response (200 OK):** -Nearest Drivers
 
 ## 🧪 Testing
 
