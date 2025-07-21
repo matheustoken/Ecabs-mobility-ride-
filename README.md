@@ -40,7 +40,7 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ---
 
-### 1. Registrar Motorista
+### 1. Register Driver
 
 - **Endpoint:** `POST /driver/register`
 - **Headers:**
@@ -57,6 +57,51 @@ This project is a Java-based ride matching service for a mobility platform. The 
   }
 }
 ```
+Status: `201 CREATED`
+### 2. Update Driver
+
+- **Endpoint:** `POST /driver/update`
+- **Headers:**
+  - Content-Type: application/json
+
+- **Request JSON:**
+```json
+{
+
+  "currentLocation": {
+    "currentLocationX": 10.0,
+    "currentLocationY": 20.0
+  },
+  "status": "AVAILABLE"
+}
+```
+Status: `200 OK`
+
+### 3. Request Driver
+
+- **Endpoint:** `POST /driver/register`
+- **Headers:**
+  - Content-Type: application/json
+
+- **Request JSON:**
+```json
+{
+    "currentLocationX": 10.0,
+    "currentLocationY": 20.0
+}
+```
+-status: `201 CREATED`
+### 4. Get Nearest Available Drivers
+
+- **Endpoint:** `GET /driver/nearest`
+- **Query Parameters:**
+  - `locationX` (Double) — X coordinate of pickup location (required)
+  - `locationY` (Double) — Y coordinate of pickup location (required)
+
+- **Description:**  
+Returns a list of nearest available drivers sorted by Euclidean distance to the given pickup location
+
+Status: `200 OK`
 
 ## 🧪 Testing
 
