@@ -37,24 +37,6 @@ This project is a Java-based ride matching service for a mobility platform. The 
 - **Tests:** Unit tests covering service and controller layers
 
 ---
-## 🚀 How to Use the API
-## 🚀 How to Use the API
-
-### 1. Register a Driver
-
-**Endpoint:** `POST /driver/register`  
-**Request JSON:**
-
-```json
-{
-  "name": "Driver1",
-  "car": "Car1",
-  "currentLocation": {
-    "currentLocationX": 10.0,
-    "currentLocationY": 20.0
-  }
-}
-```json
 
 ## 🧪 Testing
 
