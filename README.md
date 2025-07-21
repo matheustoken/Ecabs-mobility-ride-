@@ -44,6 +44,15 @@ Unit tests are implemented using JUnit and Mockito and cover:
 
 - ✅ **DriverService**:
   - Registering a new driver
+    ```json
+{
+  "name": "Driver1",
+  "car": "Car1",
+  "currentLocation": {
+    "currentLocationX": 10.0,
+    "currentLocationY": 20.0
+  }
+}
   - Updating driver availability
   - Updating location
 - ✅ **RideService**:
