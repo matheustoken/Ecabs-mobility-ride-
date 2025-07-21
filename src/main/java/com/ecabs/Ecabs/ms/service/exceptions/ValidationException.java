@@ -1,11 +1,7 @@
 package com.ecabs.Ecabs.ms.service.exceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ValidationException extends RuntimeException {
     private List<String> errors;

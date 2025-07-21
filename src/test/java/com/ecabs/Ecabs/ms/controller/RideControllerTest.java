@@ -16,8 +16,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Optional;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,7 +38,9 @@ class RideControllerTest {
     void shouldRequestRideSuccessfully() throws Exception {
         Location pickupLocation = new Location(10.0, 20.0);
 
-        Driver driver = new Driver(123L, "Lazaro", "HONDA-FIT", new Location(15.0, 25.0));
+        Driver driver = new Driver(
+                123L, "Lazaro", "HONDA-FIT",
+                new Location(15.0, 25.0));
         Ride ride = new Ride(123L, driver, pickupLocation);
 
         Mockito.when(rideService.requestRide(Mockito.any(Location.class)))
@@ -52,11 +52,12 @@ class RideControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.rideId").value(123L))
-                .andExpect(jsonPath("$.driverName").value("Lazaro"))
-                .andExpect(jsonPath("$.carName").value("HONDA-FIT"))
-                .andExpect(jsonPath("$.driverLocation.currentLocationX").value(15.0))
-                .andExpect(jsonPath("$.driverLocation.currentLocationY").value(25.0));
+                .andExpect(jsonPath("$.message").value("Ride found successfully."))
+                .andExpect(jsonPath("$.ride.rideId").value(123L))
+                .andExpect(jsonPath("$.ride.driverName").value("Lazaro"))
+                .andExpect(jsonPath("$.ride.carName").value("HONDA-FIT"))
+                .andExpect(jsonPath("$.ride.driverLocation.currentLocationX").value(15.0))
+                .andExpect(jsonPath("$.ride.driverLocation.currentLocationY").value(25.0));
     }
 
     @Test

@@ -1,10 +1,8 @@
 package com.ecabs.Ecabs.ms.controller;
 
 import com.ecabs.Ecabs.ms.dto.Request.UpdateDriverRequestDTO;
-import com.ecabs.Ecabs.ms.dto.Response.DriverResponseDTO;
-import com.ecabs.Ecabs.ms.dto.Response.RegisterDriverResponseDTO;
+import com.ecabs.Ecabs.ms.dto.Response.*;
 import com.ecabs.Ecabs.ms.dto.Request.RegisterDriverRequestDTO;
-import com.ecabs.Ecabs.ms.dto.Response.UpdateDriverResponseDTO;
 import com.ecabs.Ecabs.ms.entities.Location;
 import com.ecabs.Ecabs.ms.service.DriverService;
 import jakarta.validation.Valid;
@@ -24,8 +22,11 @@ public class DriverController {
     private DriverService driverService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDriverResponseDTO> registerDriver(@RequestBody RegisterDriverRequestDTO requestDTO) {
+    public ResponseEntity<RegisterDriverResponseWrapperDTO> registerDriver(@RequestBody RegisterDriverRequestDTO requestDTO) {
         RegisterDriverResponseDTO response = driverService.registerDriver(requestDTO);
+        RegisterDriverResponseWrapperDTO wrapper = new RegisterDriverResponseWrapperDTO(
+                "Driver successfully registered!",response
+        );
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -33,16 +34,19 @@ public class DriverController {
                 .buildAndExpand(response.getDriverId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.created(uri).body(wrapper);
     }
 
     @PutMapping("/{driverId}/update")
-    public ResponseEntity<UpdateDriverResponseDTO> updateDriver(
+    public ResponseEntity<UpdateDriverResponseWrapperDTO> updateDriver(
             @Valid @PathVariable Long driverId,
             @RequestBody UpdateDriverRequestDTO request) {
 
         UpdateDriverResponseDTO response = driverService.updateDriver(driverId, request);
-        return ResponseEntity.ok(response);
+        UpdateDriverResponseWrapperDTO wrapper = new UpdateDriverResponseWrapperDTO(
+                "Driver information updated successfully!",response
+        );
+        return ResponseEntity.ok(wrapper);
     }
 
     @GetMapping("/nearest")

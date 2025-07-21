@@ -1,7 +1,9 @@
 package com.ecabs.Ecabs.ms.controller;
 
+import com.ecabs.Ecabs.ms.dto.Response.RegisterDriverResponseWrapperDTO;
 import com.ecabs.Ecabs.ms.dto.Response.ResponseCompleteRideDTO;
 import com.ecabs.Ecabs.ms.dto.Response.RideResponseDTO;
+import com.ecabs.Ecabs.ms.dto.Response.RideResponseWrapperDTO;
 import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.Location;
 import com.ecabs.Ecabs.ms.entities.Ride;
@@ -10,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/ride")
@@ -22,7 +22,7 @@ public class RideController {
     private RideService rideService;
 
     @PostMapping("/request")
-    public ResponseEntity<RideResponseDTO> requestRide(@RequestBody Location pickupLocation) {
+    public ResponseEntity<RideResponseWrapperDTO> requestRide(@RequestBody Location pickupLocation) {
         Ride ride = rideService.requestRide(pickupLocation);
         Driver driver = ride.getDriver();
 
@@ -32,6 +32,9 @@ public class RideController {
                 driver.getCar(),
                 driver.getCurrentLocation()
         );
+        RideResponseWrapperDTO wrapper = new RideResponseWrapperDTO(
+                "Ride found successfully.",response
+        );
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -39,7 +42,7 @@ public class RideController {
                 .buildAndExpand(response.getRideId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.created(uri).body(wrapper);
     }
 
     @PostMapping("/{rideId}/complete")

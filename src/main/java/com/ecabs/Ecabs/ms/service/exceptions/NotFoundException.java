@@ -10,10 +10,6 @@ public class NotFoundException extends RuntimeException {
         this.errors = List.of(message);
     }
 
-    public NotFoundException(List<String> errors) {
-        this.errors = errors;
-    }
-
     public List<String> getErrors() {
         return errors;
     }

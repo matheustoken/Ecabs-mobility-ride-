@@ -2,11 +2,9 @@ package com.ecabs.Ecabs.ms.service.validators;
 
 import com.ecabs.Ecabs.ms.dto.Request.RegisterDriverRequestDTO;
 import com.ecabs.Ecabs.ms.dto.Request.UpdateDriverRequestDTO;
-import com.ecabs.Ecabs.ms.dto.Response.RegisterDriverResponseDTO;
 import com.ecabs.Ecabs.ms.entities.Driver;
 import com.ecabs.Ecabs.ms.entities.DriverStatus;
 import com.ecabs.Ecabs.ms.entities.Location;
-import com.ecabs.Ecabs.ms.service.exceptions.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,7 @@ public class DriveServiceValidators {
     }
 
     public Boolean updateDriverIdValidator(Long driverId, Map<Long, Driver> drivers) {
-        return driverId ==null|| !drivers.containsKey(driverId);
+        return driverId == null || !drivers.containsKey(driverId);
     }
 
     public List<String> updateDriverValidator(UpdateDriverRequestDTO driver) {

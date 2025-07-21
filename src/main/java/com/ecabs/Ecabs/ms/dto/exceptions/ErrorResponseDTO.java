@@ -2,13 +2,9 @@ package com.ecabs.Ecabs.ms.dto.exceptions;
 
 import java.util.List;
 
-
 public class ErrorResponseDTO {
 
     private ErrorDetail error;
-
-    public ErrorResponseDTO() {
-    }
 
     public ErrorResponseDTO(String message, List<String> details) {
         this.error = new ErrorDetail(message, details);

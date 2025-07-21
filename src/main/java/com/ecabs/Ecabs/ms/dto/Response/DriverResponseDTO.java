@@ -3,14 +3,9 @@ package com.ecabs.Ecabs.ms.dto.Response;
 import com.ecabs.Ecabs.ms.entities.Location;
 
 public class DriverResponseDTO {
-    private Long  driverId;
     private String name;
     private String car;
     private Double distance;
-
-
-    public DriverResponseDTO(){
-    }
 
     public DriverResponseDTO(String name, String car, Double distance) {
         this.name = name;

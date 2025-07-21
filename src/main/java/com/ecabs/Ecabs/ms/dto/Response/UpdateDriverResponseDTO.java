@@ -10,9 +10,6 @@ public class UpdateDriverResponseDTO {
     private Location currentLocation;
     private DriverStatus status;
 
-    public UpdateDriverResponseDTO(){
-    }
-
     public UpdateDriverResponseDTO(String name,String car, Location currentLocation, DriverStatus status) {
         this.car = car;
         this.name = name;
