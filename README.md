@@ -60,7 +60,7 @@ This project is a Java-based ride matching service for a mobility platform. The 
 Status: `201 CREATED`
 ### 2. Update Driver
 
-- **Endpoint:** `POST /driver/update`
+- **Endpoint:** `PUT /driver/{driverId}/update`
 - **Headers:**
   - Content-Type: application/json
 
@@ -79,7 +79,7 @@ Status: `200 OK`
 
 ### 3. Request Driver
 
-- **Endpoint:** `POST /driver/register`
+- **Endpoint:** `POST /ride/request`
 - **Headers:**
   - Content-Type: application/json
 
@@ -100,6 +100,14 @@ Status: `201 CREATED`
 
 - **Description:**  
 Returns a list of nearest available drivers sorted by Euclidean distance to the given pickup location
+
+Status: `200 OK`
+
+### 5. Complete Ride
+
+- **Endpoint:** `POST /ride/{rideId}/complete`
+- **Headers:**
+  - Content-Type: application/json
 
 Status: `200 OK`
 
