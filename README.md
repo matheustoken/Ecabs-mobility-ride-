@@ -38,6 +38,26 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ---
 
+---
+
+### 1. Registrar Motorista
+
+- **Endpoint:** `POST /driver/register`
+- **Headers:**
+  - Content-Type: application/json
+
+- **Request JSON:**
+```json
+{
+  "name": "Driver1",
+  "car": "Car1",
+  "currentLocation": {
+    "currentLocationX": 10.0,
+    "currentLocationY": 20.0
+  }
+}
+---
+
 ## 🧪 Testing
 
 Unit tests are implemented using JUnit and Mockito and cover:
