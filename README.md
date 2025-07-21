@@ -54,7 +54,7 @@ This project is a Java-based ride matching service for a mobility platform. The 
     "currentLocationY": 20.0
   }
 }
-
+```json
 
 ## 🧪 Testing
 
