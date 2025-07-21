@@ -14,9 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,71 +47,6 @@ class DriverServiceTest {
     }
 
     @Test
-    void shouldThrowValidationExceptionWhenNameIsMissing() {
-        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("",
-                "HONDA-HRV",
-                new Location(10.0, 20.0)
-        );
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.registerDriver(request);
-        });
-        assertTrue(exception.getErrors().contains("Driver name is required"));
-
-    }
-
-    @Test
-    void shouldThrowValidationExceptionWhenCarIsMissing() {
-        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
-                "",
-                new Location(10.0, 20.0)
-        );
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.registerDriver(request);
-        });
-        assertTrue(exception.getErrors().contains("Car is required"));
-
-    }
-
-    @Test
-    void shouldThrowValidationExceptionWhenLocationIsMissing() {
-        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
-                "HONDA-HRV",
-                null
-        );
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.registerDriver(request);
-        });
-        assertTrue(exception.getErrors().contains("Location is required"));
-
-    }
-
-    @Test
-    void shouldThrowValidationExceptionWhenLocationXIsMissing() {
-        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
-                "HONDA-HRV", new Location(null, 10.0)
-
-        );
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.registerDriver(request);
-        });
-        assertTrue(exception.getErrors().contains("Location X is required"));
-
-    }
-
-    @Test
-    void shouldThrowValidationExceptionWhenLocationYIsMissing() {
-        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
-                "HONDA-HRV", new Location(20.0, null)
-
-        );
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.registerDriver(request);
-        });
-        assertTrue(exception.getErrors().contains("Location Y is required"));
-
-    }
-
-    @Test
     void shouldUpdateDriverSuccessfully() {
         RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
                 "Matheus",
@@ -136,105 +68,6 @@ class DriverServiceTest {
         assertEquals(10.0, updateResponse.getCurrentLocation().currentLocationX());
         assertEquals(20.0, updateResponse.getCurrentLocation().currentLocationY());
         assertEquals(DriverStatus.UNAVAILABLE, updateResponse.getStatus());
-
-    }
-
-    @Test
-    void shouldThrowNotFoundExceptionWhenDriverIdDoesNotExist() {
-
-        Long nonExistentDriverId = 999L;
-        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(
-                new Location(10.0, 10.0),
-                DriverStatus.AVAILABLE
-        );
-
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            driverService.updateDriver(nonExistentDriverId, updateRequest);
-        });
-        assertTrue(exception.getErrors().contains("Driver Not Found"));
-
-    }
-
-    @Test
-    void shouldThrowWhenLocationIsNull() {
-        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
-                "Matheus",
-                "HONDA-HRV",
-                new Location(5.0, 5.0)
-        );
-        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
-        Long driverId = registerResponse.getDriverId();
-
-
-        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(null, DriverStatus.UNAVAILABLE);
-
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.updateDriver(driverId, updateRequest);
-        });
-        assertTrue(exception.getErrors().contains("Location is required"));
-
-    }
-
-    @Test
-    void shouldThrowWhenLocationXIsNull() {
-        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
-                "Matheus",
-                "HONDA-HRV",
-                new Location(5.0, 5.0)
-        );
-        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
-        Long driverId = registerResponse.getDriverId();
-
-
-        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(
-                new Location(null,
-                        10.0),
-                DriverStatus.UNAVAILABLE);
-
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.updateDriver(driverId, updateRequest);
-        });
-        assertTrue(exception.getErrors().contains("Location X is required"));
-
-    }
-
-    @Test
-    void shouldThrowWhenLocationYIsNull() {
-        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
-                "Matheus",
-                "HONDA-HRV",
-                new Location(5.0, 5.0)
-        );
-        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
-        Long driverId = registerResponse.getDriverId();
-
-
-        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(new Location(10.0, null), DriverStatus.UNAVAILABLE);
-
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.updateDriver(driverId, updateRequest);
-        });
-        assertTrue(exception.getErrors().contains("Location Y is required"));
-
-    }
-
-    @Test
-    void shouldThrowWhenStatusIsNull() {
-        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
-                "Matheus",
-                "HONDA-HRV",
-                new Location(5.0, 5.0)
-        );
-        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
-        Long driverId = registerResponse.getDriverId();
-
-
-        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(new Location(10.0, 10.0), null);
-
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
-            driverService.updateDriver(driverId, updateRequest);
-        });
-        assertTrue(exception.getErrors().contains("Driver status must be AVAILABLE or UNAVAILABLE"));
 
     }
 
@@ -320,5 +153,168 @@ class DriverServiceTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    void shouldThrowValidationExceptionWhenNameIsMissing() {
+        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("",
+                "HONDA-HRV",
+                new Location(10.0, 20.0)
+        );
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.registerDriver(request);
+        });
+        assertTrue(exception.getErrors().contains("Driver name is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenCarIsMissing() {
+        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
+                "",
+                new Location(10.0, 20.0)
+        );
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.registerDriver(request);
+        });
+        assertTrue(exception.getErrors().contains("Car is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenLocationIsMissing() {
+        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
+                "HONDA-HRV",
+                null
+        );
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.registerDriver(request);
+        });
+        assertTrue(exception.getErrors().contains("Location is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenLocationXIsMissing() {
+        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
+                "HONDA-HRV", new Location(null, 10.0)
+
+        );
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.registerDriver(request);
+        });
+        assertTrue(exception.getErrors().contains("Location X is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenLocationYIsMissing() {
+        RegisterDriverRequestDTO request = new RegisterDriverRequestDTO("Matheus",
+                "HONDA-HRV", new Location(20.0, null)
+
+        );
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.registerDriver(request);
+        });
+        assertTrue(exception.getErrors().contains("Location Y is required"));
+
+    }
+
+    @Test
+    void shouldThrowNotFoundExceptionWhenDriverIdDoesNotExist() {
+
+        Long nonExistentDriverId = 999L;
+        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(
+                new Location(10.0, 10.0),
+                DriverStatus.AVAILABLE
+        );
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            driverService.updateDriver(nonExistentDriverId, updateRequest);
+        });
+        assertTrue(exception.getErrors().contains("Driver Not Found"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenLocationIsNull() {
+        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
+                "Matheus",
+                "HONDA-HRV",
+                new Location(5.0, 5.0)
+        );
+        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
+        Long driverId = registerResponse.getDriverId();
+
+
+        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(null, DriverStatus.UNAVAILABLE);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.updateDriver(driverId, updateRequest);
+        });
+        assertTrue(exception.getErrors().contains("Location is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenLocationXIsNull() {
+        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
+                "Matheus",
+                "HONDA-HRV",
+                new Location(5.0, 5.0)
+        );
+        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
+        Long driverId = registerResponse.getDriverId();
+
+
+        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(
+                new Location(null,
+                        10.0),
+                DriverStatus.UNAVAILABLE);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.updateDriver(driverId, updateRequest);
+        });
+        assertTrue(exception.getErrors().contains("Location X is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenLocationYIsNull() {
+        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
+                "Matheus",
+                "HONDA-HRV",
+                new Location(5.0, 5.0)
+        );
+        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
+        Long driverId = registerResponse.getDriverId();
+
+
+        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(new Location(10.0, null), DriverStatus.UNAVAILABLE);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.updateDriver(driverId, updateRequest);
+        });
+        assertTrue(exception.getErrors().contains("Location Y is required"));
+
+    }
+
+    @Test
+    void shouldThrowValidationExceptionWhenStatusIsNull() {
+        RegisterDriverRequestDTO registerRequest = new RegisterDriverRequestDTO(
+                "Matheus",
+                "HONDA-HRV",
+                new Location(5.0, 5.0)
+        );
+        RegisterDriverResponseDTO registerResponse = driverService.registerDriver(registerRequest);
+        Long driverId = registerResponse.getDriverId();
+
+
+        UpdateDriverRequestDTO updateRequest = new UpdateDriverRequestDTO(new Location(10.0, 10.0), null);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            driverService.updateDriver(driverId, updateRequest);
+        });
+        assertTrue(exception.getErrors().contains("Driver status must be AVAILABLE or UNAVAILABLE"));
+
+    }
 }
 

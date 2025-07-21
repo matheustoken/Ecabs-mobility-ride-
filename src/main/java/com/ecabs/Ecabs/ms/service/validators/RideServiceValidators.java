@@ -7,7 +7,6 @@ import com.ecabs.Ecabs.ms.service.exceptions.DriversNotFoundException;
 import com.ecabs.Ecabs.ms.service.exceptions.RideNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RideServiceValidators {

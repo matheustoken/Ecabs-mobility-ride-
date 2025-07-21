@@ -9,10 +9,8 @@ import com.ecabs.Ecabs.ms.service.exceptions.ValidationException;
 import com.ecabs.Ecabs.ms.service.validators.RideServiceValidators;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -38,7 +36,7 @@ public class RideService {
         driver.setStatus(DriverStatus.UNAVAILABLE);
 
         Long rideId = rideIdCounter.getAndIncrement();
-        Ride ride = new Ride(rideId, driver,location);
+        Ride ride = new Ride(rideId, driver, location);
         rides.put(rideId, ride);
 
         return ride;
@@ -65,6 +63,7 @@ public class RideService {
                 driver.getStatus().name()
         );
     }
+
     private void throwIfHasErrors(List<String> errors) {
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);

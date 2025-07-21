@@ -9,11 +9,7 @@ public class RideResponseDTO {
     private String carName;
     private Location driverLocation;
 
-    public RideResponseDTO(){
-    }
-
-
-    public RideResponseDTO(long rideId, String driverName, String carName, Location driverLocation) {
+    public RideResponseDTO(Long rideId, String driverName, String carName, Location driverLocation) {
         this.rideId = rideId;
         this.driverName = driverName;
         this.carName = carName;
@@ -27,7 +23,7 @@ public class RideResponseDTO {
         return carName;
     }
 
-    public void setRideId(long rideId) {
+    public void setRideId(Long rideId) {
         this.rideId = rideId;
     }
 
