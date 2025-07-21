@@ -38,11 +38,12 @@ This project is a Java-based ride matching service for a mobility platform. The 
 
 ---
 ## 🚀 How to Use the API
+## 🚀 How to Use the API
 
 ### 1. Register a Driver
 
- **Endpoint:** `POST /driver/register`
- **Request JSON:**
+**Endpoint:** `POST /driver/register`  
+**Request JSON:**
 
 ```json
 {
@@ -53,47 +54,7 @@ This project is a Java-based ride matching service for a mobility platform. The 
     "currentLocationY": 20.0
   }
 }
-### Success Response (201 Created) - Register Driver
 
-### 2. Update Driver Information
-
- **Endpoint:** `PUT /driver/{driverId}/update`
-  **Request JSON:**
-
-```json
-{
-  "currentLocation": {
-    "currentLocationX": 10.0,
-    "currentLocationY": 20.0
-  },
-  "status": "AVAILABLE"
-}
-### Success Response (200 OK) - Update Driver Information
-
-### 3. Request a Ride
-
- **Endpoint:** `POST /ride/request`
- **Request JSON:**
-
-```json
-{
-  "currentLocationX": 10,
-  "currentLocationY": 400.0
-}
-
-### Success Response (201 Created) - Request Ride
-
-## 4.Get Nearest Available Drivers
-
- **Endpoint:** `GET /driver/nearest`
- **Query Parameters:**
-   `locationX` (Double) - X coordinate of the pickup location (required)
-   `locationY` (Double) - Y coordinate of the pickup location (required)
-
- **Description:**  
-  Returns a list of nearest available drivers sorted by their Euclidean distance to the given pickup location.
-
- **Success Response (200 OK):** -Nearest Drivers
 
 ## 🧪 Testing
 
