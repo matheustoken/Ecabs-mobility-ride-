@@ -73,19 +73,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDTO> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         String message = "Invalid input data";
-        List<String> details;
-
-        String exMsg = ex.getMostSpecificCause().getMessage();
-
-        if (exMsg.contains("DriverStatus")) {
-            message = "Invalid value for field 'status'";
-            details = List.of("Status must be 'AVAILABLE' or 'UNAVAILABLE'");
-        } else if (exMsg.contains("Double") || exMsg.contains("number")) {
-            message = "Invalid value for field 'location'";
-            details = List.of("Location must be a numeric value");
-        } else {
-            details = List.of(exMsg);
-        }
+        List<String> details = List.of("Malformed JSON in request body");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(message, details));
     }
