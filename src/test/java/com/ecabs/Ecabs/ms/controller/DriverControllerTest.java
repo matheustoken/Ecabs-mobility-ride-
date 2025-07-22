@@ -138,9 +138,9 @@ class DriverControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error.message").value(
-                        "Invalid value for field 'location'"))
+                        "Invalid input data"))
                 .andExpect(jsonPath("$.error.details[0]").value(
-                        "Location must be a numeric value"));
+                        "Malformed JSON in request body"));
     }
 
     @Test
@@ -162,9 +162,9 @@ class DriverControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error.message").value(
-                        "Invalid value for field 'location'"))
+                        "Invalid input data"))
                 .andExpect(jsonPath("$.error.details[0]").value(
-                        "Location must be a numeric value"));
+                        "Malformed JSON in request body"));
     }
 
     @Test

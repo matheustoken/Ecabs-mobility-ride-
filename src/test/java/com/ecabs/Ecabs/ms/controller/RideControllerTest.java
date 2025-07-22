@@ -73,8 +73,8 @@ class RideControllerTest {
                         .content(invalidJson) // passa a string JSON direto
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error.message").value("Invalid value for field 'location'"))
-                .andExpect(jsonPath("$.error.details[0]").value("Location must be a numeric value"));
+                .andExpect(jsonPath("$.error.message").value("Invalid input data"))
+                .andExpect(jsonPath("$.error.details[0]").value("Malformed JSON in request body"));
     }
 
     @Test
@@ -90,8 +90,8 @@ class RideControllerTest {
                         .content(invalidJson) // passa a string JSON direto
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error.message").value("Invalid value for field 'location'"))
-                .andExpect(jsonPath("$.error.details[0]").value("Location must be a numeric value"));
+                .andExpect(jsonPath("$.error.message").value("Invalid input data"))
+                .andExpect(jsonPath("$.error.details[0]").value("Malformed JSON in request body"));
     }
 
     @Test

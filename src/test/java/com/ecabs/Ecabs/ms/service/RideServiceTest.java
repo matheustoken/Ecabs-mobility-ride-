@@ -106,7 +106,7 @@ class RideServiceTest {
     }
 
     @Test
-    void testConcurrentDriverAllocation() throws InterruptedException {
+    void shouldTestConcurrentDriverAllocation() throws InterruptedException {
 
         List<String> allocatedDrivers = Collections.synchronizedList(new ArrayList<>());
 
@@ -199,7 +199,7 @@ class RideServiceTest {
     }
 
     @Test
-    void  houldAllocateAllDriversConcurrentlyWithThreads() throws InterruptedException, BrokenBarrierException {
+    void  shouldAllocateAllDriversConcurrentlyWithThreads() throws InterruptedException, BrokenBarrierException {
 
         List<String> allocatedDrivers = Collections.synchronizedList(new ArrayList<>());
 
